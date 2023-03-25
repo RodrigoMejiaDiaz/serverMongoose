@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-// Load Book model
+// Load Categoria model
 const Categoria = require("../../models/Categoria");
 
 router.get("/test", (req, res) => res.send("categoria route testing!"));
@@ -51,5 +51,25 @@ router.get("/productos/:id", (req, res) => {
     .catch((err) =>
       res.status(404).json({ nohayproductos: "No Productos encontrados" })
     );
+});
+
+// @route POST api/productos
+// @description Add a new producto
+// @access Public
+router.post("/productos", (req, res) => {
+  const { nombre, desc, marca, img, categoria } = req.body;
+
+  const nuevoProducto = new Producto({
+    nombre,
+    desc,
+    marca,
+    categoria,
+    img,
+  });
+
+  nuevoProducto
+    .save()
+    .then((producto) => res.json(producto))
+    .catch((err) => console.log(err));
 });
 module.exports = router;
