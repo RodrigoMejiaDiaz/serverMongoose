@@ -74,7 +74,7 @@ router.post("/productos", (req, res) => {
 });
 
 // @route PUT api/productos
-// @description Edit a new producto
+// @description Editar un producto
 // @access Public
 router.put("/productos/:id", async (req, res) => {
   try {
@@ -99,6 +99,26 @@ router.put("/productos/:id", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Error en el servidor");
+  }
+});
+
+// @route DELETE api/productos/:id
+// @desc Elimina un producto por su ID
+// @access Public
+router.delete("/productos/:id", async (req, res) => {
+  try {
+    const producto = await Producto.findById(req.params.id);
+
+    if (!producto) {
+      return res.status(404).json({ msg: "Producto no encontrado" });
+    }
+
+    await producto.deleteOne();
+
+    res.json({ msg: "Producto eliminado exitosamente" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Error del servidor");
   }
 });
 
