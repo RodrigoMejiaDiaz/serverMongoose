@@ -72,4 +72,34 @@ router.post("/productos", (req, res) => {
     .then((producto) => res.json(producto))
     .catch((err) => console.log(err));
 });
+
+// @route PUT api/productos
+// @description Edit a new producto
+// @access Public
+router.put("/productos/:id", async (req, res) => {
+  try {
+    const { nombre, desc, marca, img, categoria } = req.body;
+
+    // Verificar si existe el producto
+    const productoExistente = await Producto.findById(req.params.id);
+
+    if (!productoExistente) {
+      return res.status(404).json({ msg: "Producto no encontrado" });
+    }
+
+    // Actualizar el producto
+    productoExistente.nombre = nombre;
+    productoExistente.desc = desc;
+    productoExistente.marca = marca;
+    productoExistente.categoria = categoria;
+    productoExistente.img = img;
+
+    const productoActualizado = await productoExistente.save();
+    res.json(productoActualizado);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Error en el servidor");
+  }
+});
+
 module.exports = router;
