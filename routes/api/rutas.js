@@ -28,7 +28,7 @@ let upload = multer({ storage: storageM, fileFilter });
 
 const storage = new Storage({
   projectId: "deep-clock-381322",
-  keyFilename: "config/keyfile.json",
+  keyFilename: process.env.keyfile,
 });
 
 const bucket = storage.bucket("corporacionmdc-imgs");
